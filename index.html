@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaultChat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: white;
+            color: black;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            background-color: black;
+            color: white;
+        }
+
+        #header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        #logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        #vaultchat-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        #name-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+
+        #usernameInput {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        #code-section {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        button {
+            background: #007BFF;
+            border: none;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        /* Chat Page */
+        #chat-container {
+            display: none;
+            flex-direction: column;
+            width: 80%;
+            max-width: 600px;
+            height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        #message-input {
+            display: flex;
+            padding: 10px;
+            background: #f1f1f1;
+        }
+
+        #messageField {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        #sendMessage {
+            padding: 10px 15px;
+            background: #007BFF;
+            border: none;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div id="header-left">
+        <img src="logo.png" alt="VaultChat Logo" id="logo">
+        <h1 id="vaultchat-title">VaultChat</h1>
+    </div>
+</header>
+
+<main>
+    <div id="name-box">
+        <input type="text" id="usernameInput" placeholder="Enter your name">
+        <button id="submitName">Start Chat</button>
+    </div>
+    <h2 id="welcomeMessage" class="hidden"></h2>
+    <div id="code-section" class="hidden"></div>
+    <button id="connectBtn" class="hidden">Connect</button>
+
+    <div id="chat-container">
+        <div id="chat-box"></div>
+        <div id="message-input">
+            <input type="text" id="messageField" placeholder="Type a message...">
+            <button id="sendMessage">Send</button>
+        </div>
+    </div>
+</main>
+
+<script>
+    let username = "";
+
+    document.getElementById('submitName').addEventListener('click', function() {
+        username = document.getElementById('usernameInput').value.trim();
+        if (username) {
+            const uniqueCode = Math.random().toString(36).substr(2, 6).toUpperCase();
+            document.getElementById('welcomeMessage').textContent = `Welcome ${username}!`;
+            document.getElementById('welcomeMessage').classList.remove('hidden');
+            document.getElementById('code-section').textContent = `Your code: ${uniqueCode}`;
+            document.getElementById('code-section').classList.remove('hidden');
+            document.getElementById('connectBtn').classList.remove('hidden');
+            document.getElementById('name-box').style.display = 'none';
+        }
+    });
+
+    document.getElementById('connectBtn').addEventListener('click', function() {
+        document.getElementById('connectBtn').classList.add('hidden');
+        document.getElementById('chat-container').style.display = 'flex';
+    });
+
+    document.getElementById('sendMessage').addEventListener('click', function() {
+        const message = document.getElementById('messageField').value.trim();
+        if (message && username) {
+            const chatBox = document.getElementById('chat-box');
+            const messageElement = document.createElement('p');
+            messageElement.innerHTML = `<strong>${username}:</strong> ${message}`;
+            chatBox.appendChild(messageElement);
+            document.getElementById('messageField').value = '';
+        }
+    });
+</script>
+
+</body>
+</html>
